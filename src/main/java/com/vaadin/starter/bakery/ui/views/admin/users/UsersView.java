@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.views.admin.users;
 
+import static com.vaadin.flow.i18n.I18NProvider.translate;
+
 import jakarta.annotation.security.RolesAllowed;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,15 +55,15 @@ public class UsersView extends AbstractBakeryCrudView<User> {
 	}
 
 	private static BinderCrudEditor<User> createForm(PasswordEncoder passwordEncoder) {
-		EmailField email = new EmailField("Email (login)");
+		EmailField email = new EmailField(translate("email.field"));
 		email.getElement().setAttribute("colspan", "2");
-		TextField first = new TextField("First name");
-		TextField last = new TextField("Last name");
-		PasswordField password = new PasswordField("Password");
+		TextField first = new TextField(translate("first.name.field"));
+		TextField last = new TextField(translate("last.name.field"));
+		PasswordField password = new PasswordField(translate("password.field"));
 		password.getElement().setAttribute("colspan", "2");
 		ComboBox<String> role = new ComboBox<>();
 		role.getElement().setAttribute("colspan", "2");
-		role.setLabel("Role");
+		role.setLabel(translate("role.field"));
 
 		FormLayout form = new FormLayout(email, first, last, password, role);
 

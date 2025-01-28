@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui.views.admin.products;
 
+import static com.vaadin.flow.i18n.I18NProvider.translate;
+
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -51,9 +53,9 @@ public class ProductsView extends AbstractBakeryCrudView<Product> {
 	}
 
 	private static BinderCrudEditor<Product> createForm() {
-		TextField name = new TextField("Product name");
+		TextField name = new TextField(translate("product.name"));
 		name.getElement().setAttribute("colspan", "2");
-		TextField price = new TextField("Unit price");
+		TextField price = new TextField(translate("unit.price"));
 		price.getElement().setAttribute("colspan", "2");
 
 		FormLayout form = new FormLayout(name, price);
