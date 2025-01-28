@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui;
 
+import static com.vaadin.flow.i18n.I18NProvider.translate;
+
 import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_DASHBOARD;
 import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_LOGOUT;
 import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_PRODUCTS;
@@ -52,7 +54,8 @@ public class MainView extends AppLayout {
 		confirmDialog.setCancelButtonTheme("raised tertiary");
 
 		this.setDrawerOpened(false);
-		Span appName = new Span("###Bakery###");
+		Span appName = new Span(translate("app.title"));
+		appName.addClassName("app-name");
 		appName.addClassName("hide-on-mobile");
 
 		menu = createMenuTabs();
