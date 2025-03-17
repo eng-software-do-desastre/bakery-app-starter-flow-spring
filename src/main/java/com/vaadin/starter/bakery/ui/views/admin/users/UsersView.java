@@ -44,10 +44,10 @@ public class UsersView extends AbstractBakeryCrudView<User> {
 
 	@Override
 	public void setupGrid(Grid<User> grid) {
-		grid.addColumn(User::getEmail).setWidth("270px").setHeader(translate("email.field")).setFlexGrow(5);
-		grid.addColumn(u -> u.getFirstName() + " " + u.getLastName()).setHeader(translate("first.name.field"))
+		grid.addColumn(User::getEmail).setWidth("270px").setHeader(translate("email")).setFlexGrow(5);
+		grid.addColumn(u -> u.getFirstName() + " " + u.getLastName()).setHeader(translate("first.name"))
 				.setWidth("200px").setFlexGrow(5);
-		grid.addColumn(User::getRole).setHeader(translate("role.field")).setWidth("150px");
+		grid.addColumn(User::getRole).setHeader(translate("role")).setWidth("150px");
 	}
 
 	@Override
@@ -56,15 +56,15 @@ public class UsersView extends AbstractBakeryCrudView<User> {
 	}
 
 	private static BinderCrudEditor<User> createForm(PasswordEncoder passwordEncoder) {
-		EmailField email = new EmailField(translate("email.field"));
+		EmailField email = new EmailField(translate("email"));
 		email.getElement().setAttribute("colspan", "2");
-		TextField first = new TextField(translate("first.name.field"));
-		TextField last = new TextField(translate("last.name.field"));
-		PasswordField password = new PasswordField(translate("password.field"));
+		TextField first = new TextField(translate("first.name"));
+		TextField last = new TextField(translate("last.name"));
+		PasswordField password = new PasswordField(translate("password"));
 		password.getElement().setAttribute("colspan", "2");
 		ComboBox<String> role = new ComboBox<>();
 		role.getElement().setAttribute("colspan", "2");
-		role.setLabel(translate("role.field"));
+		role.setLabel(translate("role"));
 
 		FormLayout form = new FormLayout(email, first, last, password, role);
 
