@@ -44,9 +44,10 @@ public class UsersView extends AbstractBakeryCrudView<User> {
 
 	@Override
 	public void setupGrid(Grid<User> grid) {
-		grid.addColumn(User::getEmail).setWidth("270px").setHeader("Email").setFlexGrow(5);
-		grid.addColumn(u -> u.getFirstName() + " " + u.getLastName()).setHeader("Name").setWidth("200px").setFlexGrow(5);
-		grid.addColumn(User::getRole).setHeader("Role").setWidth("150px");
+		grid.addColumn(User::getEmail).setWidth("270px").setHeader(translate("email.field")).setFlexGrow(5);
+		grid.addColumn(u -> u.getFirstName() + " " + u.getLastName()).setHeader(translate("first.name.field"))
+				.setWidth("200px").setFlexGrow(5);
+		grid.addColumn(User::getRole).setHeader(translate("role.field")).setWidth("150px");
 	}
 
 	@Override
