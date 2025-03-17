@@ -1,6 +1,8 @@
 package com.vaadin.starter.bakery.ui.views.admin.products;
 
-import static com.vaadin.flow.i18n.I18NProvider.translate;
+import java.util.Currency;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.crud.BinderCrudEditor;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -8,6 +10,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
+import static com.vaadin.flow.i18n.I18NProvider.translate;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.starter.bakery.app.security.CurrentUser;
@@ -18,9 +21,6 @@ import com.vaadin.starter.bakery.ui.MainView;
 import com.vaadin.starter.bakery.ui.crud.AbstractBakeryCrudView;
 import com.vaadin.starter.bakery.ui.utils.BakeryConst;
 import com.vaadin.starter.bakery.ui.utils.converters.CurrencyFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Currency;
 
 import jakarta.annotation.security.RolesAllowed;
 
@@ -43,8 +43,8 @@ public class ProductsView extends AbstractBakeryCrudView<Product> {
 
 	@Override
 	protected void setupGrid(Grid<Product> grid) {
-		grid.addColumn(Product::getName).setHeader("Product Name").setFlexGrow(10);
-		grid.addColumn(p -> currencyFormatter.encode(p.getPrice())).setHeader("Unit Price");
+		grid.addColumn(Product::getName).setHeader(translate("product.name")).setFlexGrow(10);
+		grid.addColumn(p -> currencyFormatter.encode(p.getPrice())).setHeader(translate("unit.price"));
 	}
 
 	@Override
