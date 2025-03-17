@@ -1,13 +1,5 @@
 package com.vaadin.starter.bakery.ui;
 
-import static com.vaadin.flow.i18n.I18NProvider.translate;
-
-import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_DASHBOARD;
-import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_LOGOUT;
-import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_PRODUCTS;
-import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_STOREFRONT;
-import static com.vaadin.starter.bakery.ui.utils.BakeryConst.TITLE_USERS;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +16,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
+import static com.vaadin.flow.i18n.I18NProvider.translate;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServlet;
@@ -115,15 +108,15 @@ public class MainView extends AppLayout {
 
 	private Tab[] getAvailableTabs() {
 		final List<Tab> tabs = new ArrayList<>(4);
-		tabs.add(createTab(VaadinIcon.EDIT, TITLE_STOREFRONT, StorefrontView.class));
-		tabs.add(createTab(VaadinIcon.CLOCK, TITLE_DASHBOARD, DashboardView.class));
+		tabs.add(createTab(VaadinIcon.EDIT, translate("storefront"), StorefrontView.class));
+		tabs.add(createTab(VaadinIcon.CLOCK, translate("dashboard"), DashboardView.class));
 		if (accessChecker.hasAccess(UsersView.class,
 				VaadinServletRequest.getCurrent().getHttpServletRequest())) {
-			tabs.add(createTab(VaadinIcon.USER, TITLE_USERS, UsersView.class));
+			tabs.add(createTab(VaadinIcon.USER, translate("users"), UsersView.class));
 		}
 		if (accessChecker.hasAccess(ProductsView.class,
 				VaadinServletRequest.getCurrent().getHttpServletRequest())) {
-			tabs.add(createTab(VaadinIcon.CALENDAR, TITLE_PRODUCTS, ProductsView.class));
+			tabs.add(createTab(VaadinIcon.CALENDAR, translate("products"), ProductsView.class));
 		}
 		final String contextPath = VaadinServlet.getCurrent().getServletContext().getContextPath();
 		final Tab logoutTab = createTab(createLogoutLink(contextPath));
@@ -144,7 +137,7 @@ public class MainView extends AppLayout {
 	}
 
 	private static Anchor createLogoutLink(String contextPath) {
-		final Anchor a = populateLink(new Anchor(), VaadinIcon.ARROW_RIGHT, TITLE_LOGOUT);
+		final Anchor a = populateLink(new Anchor(), VaadinIcon.ARROW_RIGHT, translate("logout"));
 		return a;
 	}
 
