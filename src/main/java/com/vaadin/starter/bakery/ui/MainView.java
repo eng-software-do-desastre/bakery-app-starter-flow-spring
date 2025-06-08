@@ -1,5 +1,7 @@
 package com.vaadin.starter.bakery.ui;
 
+import static com.vaadin.flow.i18n.I18NProvider.translate;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -11,12 +13,15 @@ import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.Notification.Position;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
-import static com.vaadin.flow.i18n.I18NProvider.translate;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServlet;
@@ -77,6 +82,8 @@ public class MainView extends AppLayout {
 		getElement().addEventListener("search-blur", e -> {
 			getElement().getClassList().remove("hide-navbar");
 		});
+
+		showVersions();
 	}
 
 	@Override
@@ -124,6 +131,27 @@ public class MainView extends AppLayout {
 		tabs.add(logoutTab);
 		return tabs.toArray(new Tab[tabs.size()]);
 	}
+
+        private void showVersions() {
+            VerticalLayout versions = new VerticalLayout();
+            String[] items = { "com.vaadin.flow.server.VaadinService",
+                    "com.vaadin.controlcenter.starter.actuate.endpoint.VaadinActuatorEndpoint",
+                    "org.springframework.data.domain.Pageable" };
+            for (String string : items) {
+                try {
+                    String jarPath = Class.forName(string).getProtectionDomain()
+                            .getCodeSource().getLocation().getPath();
+                    String version = jarPath
+                            .replaceFirst(".*/([^/]+)\\.jar!?/.*", "$1");
+                    versions.add(new Div(version));
+                } catch (Exception ignore) {
+                    ignore.printStackTrace();
+                }
+            }
+            Notification n = new Notification(versions);
+            n.setPosition(Position.TOP_END);
+            n.open();
+        }
 
 	private static Tab createTab(VaadinIcon icon, String title, Class<? extends Component> viewClass) {
 		return createTab(populateLink(new RouterLink("", viewClass), icon, title));
