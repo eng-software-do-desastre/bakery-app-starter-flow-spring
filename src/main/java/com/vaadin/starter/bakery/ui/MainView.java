@@ -2,14 +2,17 @@ package com.vaadin.starter.bakery.ui;
 
 import static com.vaadin.flow.i18n.I18NProvider.translate;
 
+import java.lang.management.ManagementFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.component.html.Anchor;
@@ -22,10 +25,13 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.TabVariant;
 import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.internal.LocaleUtil;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinService;
 import com.vaadin.flow.server.VaadinServlet;
 import com.vaadin.flow.server.VaadinServletRequest;
+import com.vaadin.flow.server.Version;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.spring.security.AuthenticationContext;
 import com.vaadin.starter.bakery.ui.views.HasConfirmation;
@@ -83,7 +89,7 @@ public class MainView extends AppLayout {
 			getElement().getClassList().remove("hide-navbar");
 		});
 
-		showVersions();
+		showInfo();
 	}
 
 	@Override
@@ -132,20 +138,50 @@ public class MainView extends AppLayout {
 		return tabs.toArray(new Tab[tabs.size()]);
 	}
 
-        private void showVersions() {
-            VerticalLayout versions = new VerticalLayout();
-            String[] items = { "com.vaadin.flow.server.VaadinService",
+        private void showInfo() {
+
+            String version = "Platform: " + Version.getFullVersion();
+            String theme = version.startsWith("24.7") ? "" : "dark";
+            UI.getCurrent().getElement().setAttribute("theme", theme);
+
+            String showInfo = System.getenv("SHOW_INFO");
+            if ((showInfo == null || "false".equals(showInfo))
+                    && !ManagementFactory.getRuntimeMXBean().getInputArguments()
+                            .toString().contains("jwdp")) {
+                return;
+            }
+
+            List<String> items = new ArrayList<>(List.of(
+                    "com.vaadin.flow.server.VaadinService",
                     "com.vaadin.controlcenter.starter.actuate.endpoint.VaadinActuatorEndpoint",
-                    "org.springframework.data.domain.Pageable" };
+                    "org.springframework.data.domain.Pageable"));
+            if (showInfo != null) {
+                for (String s : showInfo.split("[, ]+")) {
+                    if (s.contains(".")) {
+                        items.add(s);
+                    }
+                }
+            }
+
+            String header = "header: " + VaadinService.getCurrentRequest()
+                    .getHeader("Accept-Language");
+            String locales = "available: " + LocaleUtil.getI18NProvider().get()
+                    .getProvidedLocales().stream().map(l -> l.toString())
+                    .collect(Collectors.joining(","));
+            String locale = "selected: " + getLocale().toString();
+
+            VerticalLayout versions = new VerticalLayout(new Div(version), new Div(header),
+                    new Div(locales), new Div(locale));
+            versions.setSpacing(false);
+
             for (String string : items) {
                 try {
                     String jarPath = Class.forName(string).getProtectionDomain()
                             .getCodeSource().getLocation().getPath();
-                    String version = jarPath
-                            .replaceFirst(".*/([^/]+)\\.jar!?/.*", "$1");
-                    versions.add(new Div(version));
+                    String s = jarPath
+                            .replaceFirst(".*/([^/]+)\\.jar(!?/.*)?", "$1");
+                    versions.add(new Div("· " + s));
                 } catch (Exception ignore) {
-                    ignore.printStackTrace();
                 }
             }
             Notification n = new Notification(versions);
