@@ -173,7 +173,7 @@
         <!-- Testing -->
         <dependency>
             <groupId>com.vaadin</groupId>
-            <artifactId>vaadin-testbench</artifactId>
+            <artifactId>vaadin-testbench-junit5</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -268,7 +268,7 @@
                     </plugin>
                     <plugin>
                         <artifactId>maven-failsafe-plugin</artifactId>
-                        <version>2.22.2</version>
+                        <version>3.5.3</version>
                         <executions>
                             <execution>
                                 <goals>
@@ -279,6 +279,7 @@
                         </executions>
                         <configuration>
                             <trimStackTrace>false</trimStackTrace>
+                            <enableAssertions>true</enableAssertions>
                             <systemPropertyVariables>
                                 <com.vaadin.testbench.Parameters.runLocally>chrome</com.vaadin.testbench.Parameters.runLocally>
                             </systemPropertyVariables>
