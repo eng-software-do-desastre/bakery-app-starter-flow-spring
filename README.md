@@ -2,7 +2,7 @@
 |--------------------------|-------|------|-----------------|
 | eng-software-do-desastre |  LEI     | Erick Ozaki | 122088 |
 | eng-software-do-desastre |  LEI     | Luís Pinto | 112237 |
-| eng-software-do-desastre |  LEI     |      |                 |
+| eng-software-do-desastre |  LEI     | Raul Azevedo | 111479 |
 
 
 # ⚠️ This starter is not recommended ⚠️
